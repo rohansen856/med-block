@@ -2,6 +2,10 @@
 
 ```bash
 sudo make container
+```
+- Then push the schema file into the DB
+
+```bash
 make run
 ```
 
@@ -11,5 +15,9 @@ make run
 ```bash
 choco install make
 sudo make container
+```
+- Then push the schema file into the DB
+
+```bash
 make run
 ```
