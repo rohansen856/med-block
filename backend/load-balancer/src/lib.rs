@@ -47,7 +47,7 @@ impl LoadBalancer {
         req: HttpRequest,
         data: web::Data<AppState>,
         bytes: web::Bytes,
-    ) -> Result<HttpResponse, Error> {
+    ) -> Result<HttpResponse, LoadBalanceError> {
         // Get the next server in round-robin order
         let current_index = data.current_index.fetch_add(1, Ordering::SeqCst) % data.servers.len();
         let server = &data.servers[current_index];
@@ -71,23 +71,23 @@ impl LoadBalancer {
 }
 
 #[derive(Debug)]
-struct Error {
+struct LoadBalanceError {
     inner: reqwest::Error,
 }
 
-impl Display for Error {
+impl Display for LoadBalanceError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Forwarding error: {}", self.inner)
     }
 }
 
-impl From<reqwest::Error> for Error {
+impl From<reqwest::Error> for LoadBalanceError {
     fn from(value: reqwest::Error) -> Self {
-        Error { inner: value }
+        LoadBalanceError { inner: value }
     }
 }
 
-impl ResponseError for Error {
+impl ResponseError for LoadBalanceError {
     fn status_code(&self) -> reqwest::StatusCode {
         reqwest::StatusCode::INTERNAL_SERVER_ERROR
     }

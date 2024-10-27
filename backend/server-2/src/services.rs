@@ -27,6 +27,11 @@ pub struct CreateTodoBody {
     pub due_date: Option<NaiveDate>,   // Due date can be optional
 }
 
+#[get("/")]
+pub async fn test_server() -> impl Responder {
+    HttpResponse::Ok().json("server 2 is running")
+}
+
 #[get("/todos")]
 pub async fn fetch_todos(state: Data<AppState>) -> impl Responder {
     match sqlx::query_as::<_, Todo>(
