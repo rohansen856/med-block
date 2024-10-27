@@ -65,6 +65,7 @@ impl LoadBalancer {
         for h in response.headers().iter() {
             response_builder.append_header(h);
         }
+        response_builder.append_header(("load-balancer-status", "ok"));
         let body = response.bytes().await?;
         Ok(response_builder.body(body))
     }

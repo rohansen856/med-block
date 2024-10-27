@@ -5,6 +5,9 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 mod services;
 use services::{create_todo, fetch_todos};
 
+mod header;
+use header::CustomHeader;
+
 pub struct AppState {
     db: Pool<Postgres>
 }
@@ -35,9 +38,11 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Error building a connection pool");
 
+    println!("Server 1 running on port: {}", port.clone());
     HttpServer::new(move || {
         App::new()
             .app_data(Data::new(AppState { db: pool.clone() }))
+            .wrap(CustomHeader)
             .service(create_todo)
             .service(fetch_todos)
     })
