@@ -1,6 +1,8 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
+import { User } from "@prisma/client"
 
 import { dashboardConfig } from "@/config/dashboard"
+import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { MainNav } from "@/components/shared/main-nav"
 import { DashboardNav } from "@/components/shared/nav"
@@ -21,10 +23,21 @@ export default async function DashboardLayout({
     return notFound()
   }
 
+  const { role } = (await db.user.findUnique({
+    where: {
+      id: user.id,
+    },
+    select: {
+      role: true,
+    },
+  })) ?? { role: null }
+
+  if (!role || role == "unset") return redirect("/verification")
+
   return (
     <div className="flex min-h-screen">
       <aside>
-        <DashboardSidebar user={user} />
+        <DashboardSidebar user={user as User} />
       </aside>
       <div className="w-full">
         <header className="sticky top-0 z-40 border-b bg-background py-2">

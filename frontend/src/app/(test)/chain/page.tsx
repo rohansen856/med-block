@@ -6,15 +6,15 @@ import { InfoIcon, WalletIcon } from "lucide-react"
 
 import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
+import { ToastAction } from "@/components/ui/toast"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
-import MetaMaskProvider from "./MetamaskProvider"
-import { ToastAction } from "./ui/toast"
+import { MedicalContract } from "@/components/contract"
+import MetaMaskProvider from "@/components/MetamaskProvider"
 
 const GANACHE_TESTNET_CHAIN = "0x539" // Ganache testnet chain ID
 const LOCAL_TESTNET_CHAIN = "0x7a69" // Local testnet chain ID
@@ -33,13 +33,10 @@ const switchEthereumChain = async () => {
   }
 }
 
-export const ConnectWalletButton = ({
-  setAddress,
-}: {
-  setAddress: (addr: string) => void
-}) => {
+export const ConnectWalletButton = () => {
   const [chainId, setChainId] = useState<string | null>(null)
   const [connected, setConnected] = useState<boolean>(false)
+  const [contract, setContract] = useState<MedicalContract>()
   const { sdk, connecting, account, balance } = useSDK()
 
   useEffect(() => {
@@ -94,7 +91,6 @@ export const ConnectWalletButton = ({
         console.log("Public Address:", accounts[0])
         setConnected(true)
         setChainId(window.ethereum.chainId)
-        setAddress(accounts[0])
         window.localStorage.setItem("eth_id", accounts[0])
         toast({
           title: "Metamask Connected!",
@@ -123,12 +119,23 @@ export const ConnectWalletButton = ({
     setConnected(false)
   }
 
+  async function initContract() {
+    if (!account) return
+    const data = new MedicalContract(account)
+    await data.init()
+    setContract(data)
+  }
+
+  useEffect(() => {
+    initContract()
+  }, [account])
+
   return (
     <div className="relative">
       {connected ? (
         isOnGanacheTestnet || isOnLocalTestnet ? (
           <div className="flex items-center gap-4">
-            <Button type="button" variant="destructive" onClick={disconnect}>
+            <Button variant="destructive" onClick={disconnect}>
               <WalletIcon className="size-4" /> Disconnect
             </Button>
 
@@ -141,6 +148,7 @@ export const ConnectWalletButton = ({
                   <code>{balance ?? "Balance not available"}</code>
                 </TooltipContent>
               </Tooltip>
+              -32603
             </TooltipProvider>
           </div>
         ) : (
@@ -149,29 +157,49 @@ export const ConnectWalletButton = ({
           </Button>
         )
       ) : (
-        <Button
-          type="button"
-          variant="default"
-          disabled={connecting}
-          onClick={connect}
-        >
+        <Button variant="default" disabled={connecting} onClick={connect}>
           <WalletIcon className="size-4" /> Connect MetaMask
         </Button>
       )}
+      <Button
+        onClick={async () => {
+          try {
+            if (account) {
+              const doc = await contract?.registerDoctor("Rohan", "Ortho", 2)
+              console.log(doc)
+            } else toast({ title: "No account!" })
+          } catch (error) {
+            if (error.code == -32603) {
+              toast({
+                title: "You have already registered!",
+                variant: "destructive",
+              })
+            }
+          }
+        }}
+      >
+        Register as Doctor
+      </Button>
+      <Button
+        onClick={async () => {
+          if (account) {
+            const doc = await contract?.getDoctor(account)
+            console.log(doc)
+          } else toast({ title: "No account!" })
+        }}
+      >
+        Get Doctor
+      </Button>
     </div>
   )
 }
 
-export const NavBar = ({
-  setAddress,
-}: {
-  setAddress: (addr: string) => void
-}) => {
+const ChainTestPage = () => {
   return (
     <MetaMaskProvider>
-      <ConnectWalletButton setAddress={setAddress} />
+      <ConnectWalletButton />
     </MetaMaskProvider>
   )
 }
 
-export default NavBar
+export default ChainTestPage

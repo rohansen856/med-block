@@ -1,5 +1,6 @@
 import { User } from "@prisma/client"
 import type { Icon } from "lucide-react"
+import { MongoClient } from "mongodb"
 
 import { Icons } from "@/components/icons"
 
@@ -63,3 +64,7 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     stripeCurrentPeriodEnd: number
     isPro: boolean
   }
+
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>
+}
