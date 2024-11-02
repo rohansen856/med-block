@@ -22,8 +22,8 @@ export function MainNav({ items, children }: MainNavProps) {
 
   return (
     <div className="flex gap-6 md:gap-10">
-      <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Image src={"/BML.png"} height={50} width={50} alt="BML" />
+      <Link href="/" className="flex items-center space-x-2 md:hidden">
+        <Image src={"/logo.svg"} height={50} width={50} alt="MB" />
         <span className="hidden font-bold underline underline-offset-4 sm:inline-block">
           MedBlock
         </span>
@@ -54,7 +54,7 @@ export function MainNav({ items, children }: MainNavProps) {
         {showMobileMenu ? (
           <Icons.close />
         ) : (
-          <Image src={"/BML.png"} height={50} width={50} alt="BML" />
+          <Image src={"/logo.svg"} height={50} width={50} alt="BML" />
         )}
         <span className="font-bold">Menu</span>
       </button>

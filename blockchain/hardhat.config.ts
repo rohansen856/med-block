@@ -5,7 +5,7 @@ import "@nomicfoundation/hardhat-ignition"
 require("dotenv").config()
 
 const config: HardhatUserConfig = {
-    solidity: "0.8.19",
+    solidity: "0.8.20",
     networks: {
         ganache: {
             url: process.env.PROVIDER_URL,

@@ -61,6 +61,8 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  patients Patient[]
+  doctors  Doctor[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -89,6 +91,8 @@ model Doctor {
   verified     Boolean    @default(false)
   blockId      String     @unique
   appointments Appointment[]
+  Prescription Prescription[]
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([blockId])
@@ -98,7 +102,7 @@ model Doctor {
 
 model Patient {
   id               Int        @id @default(autoincrement())
-  userId           String
+  userId           String     @unique
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
   gender           String
@@ -108,6 +112,8 @@ model Patient {
   emergencyContact String
   blockId          String     @unique
   appointments     Appointment[]
+  prescriptions    Prescription[]
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([blockId])
@@ -123,8 +129,8 @@ model Appointment {
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
 
-  doctor       Doctor    @relation(fields: [doctorId], references: [id])
-  patient      Patient   @relation(fields: [patientId], references: [id])
+  doctor       Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient      Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   @@unique([doctorId, startTime, endTime])
   @@unique([patientId, startTime, endTime])
@@ -135,4 +141,26 @@ enum AppointmentStatus {
   PENDING
   CONFIRMED
   CANCELED
+}
+
+model Medication {
+    id                     String      @id @default(uuid())
+    prescId                String
+    name                   String
+    dosage                 String
+    duration               String
+    additionalInstructions String?
+
+    prescriptions          Prescription   @relation(fields: [prescId], references: [id], onDelete: Cascade)
+}
+
+model Prescription {
+    id                     String      @id @default(uuid())
+    doctorId               Int
+    patientId              Int
+    issueDate              DateTime    @default(now())
+    medications            Medication[]
+
+    doctor                 Doctor      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+    patient                Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade)
 }

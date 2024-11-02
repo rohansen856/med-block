@@ -25,7 +25,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
       <DropdownMenuTrigger>
         <UserAvatar
           user={{ name: user.name || null, image: user.image || null }}
-          className="size-8"
+          className="size-8 border border-primary/20 bg-secondary"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -55,9 +55,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           onSelect={(event) => {
             event.preventDefault()
           }}
-        >
-          <NavBar />
-        </DropdownMenuItem>
+        ></DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"

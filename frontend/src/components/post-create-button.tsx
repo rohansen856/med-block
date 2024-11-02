@@ -10,7 +10,7 @@ import { Icons } from "@/components/icons"
 
 interface PostCreateButtonProps extends ButtonProps {}
 
-export function PostCreateButton({
+export function AppointmentCreateButton({
   className,
   variant,
   ...props
@@ -75,7 +75,7 @@ export function PostCreateButton({
       ) : (
         <Icons.add className="mr-2 h-4 w-4" />
       )}
-      New post
+      Book Appointment
     </button>
   )
 }

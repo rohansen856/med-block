@@ -31,7 +31,27 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
-  logo: Command,
+  logo: ({ ...props }: LucideProps) => (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fab"
+      data-icon="medblock"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 400 400"
+      {...props}
+    >
+      <path
+        d="M0 166.415C0 157.556 7.18135 150.375 16.04 150.375H384.96C393.819 150.375 401 157.556 401 166.415V234.585C401 243.444 393.819 250.625 384.96 250.625H16.04C7.18136 250.625 0 243.444 0 234.585V166.415Z"
+        fill="#FF0053"
+      />
+      <path
+        d="M234.585 0C243.444 0 250.625 7.18135 250.625 16.04V384.96C250.625 393.819 243.444 401 234.585 401H166.415C157.556 401 150.375 393.819 150.375 384.96V16.04C150.375 7.18136 157.556 0 166.415 0H234.585Z"
+        fill="#FF0053"
+      />
+    </svg>
+  ),
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,

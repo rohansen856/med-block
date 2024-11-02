@@ -1,24 +1,41 @@
-import { redirect } from "next/navigation"
+import { mongo } from "@/lib/mongo"
+import {
+  demoData,
+  PatientHistoryData,
+} from "@/components/patient-detail-schema"
 
-import { authOptions } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { getCurrentUser } from "@/lib/session"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { DashboardHeader } from "@/components/header"
-import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
-import { DashboardShell } from "@/components/shell"
-
-export const metadata = {
-  title: "Dashboard",
+async function insertPatientHistory(patientHistoryData: PatientHistoryData) {
+  try {
+    for (const key of Object.keys(patientHistoryData)) {
+      const collection = mongo.collection(key)
+      await collection.insertOne(patientHistoryData[key])
+      console.log(`New patient history data created for collection: ${key}`)
+    }
+  } catch (error) {
+    console.error("Error inserting patient history data:", error)
+  }
 }
 
-export default async function DashboardPage() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
+export default async function page() {
+  // await insertPatientHistory(demoData)
+  const data: any[] = []
+  try {
+    for (const key of Object.keys(demoData)) {
+      const collection = mongo.collection(key)
+      const result = await collection.findOne({})
+      data.push({ key, result })
+    }
+  } catch (error) {
+    return <pre>{JSON.stringify(error)}</pre>
   }
-
-  return <DashboardShell></DashboardShell>
+  return (
+    <div>
+      <pre>
+        <div className="m-4 bg-secondary p-8">
+          {JSON.stringify(data, null, 2)}
+        </div>
+        <div className="h-12 w-full bg-red-600"></div>
+      </pre>
+    </div>
+  )
 }

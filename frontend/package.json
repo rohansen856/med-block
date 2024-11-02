@@ -1,9 +1,9 @@
 {
-  "name": "Bettermind Labs",
+  "name": "medblock",
   "version": "0.2.0",
   "private": true,
   "author": {
-    "name": "Bettermind Labs",
+    "name": "medblock",
     "url": "https://twitter.com/rohansen856"
   },
   "scripts": {
@@ -15,6 +15,9 @@
     "preview": "next build && next start",
     "postinstall": "prisma generate",
     "db:prepare": "drizzle-kit push:pg"
+  },
+  "prisma": {
+    "seed": "npx ts-node prisma/seed.js"
   },
   "dependencies": {
     "@editorjs/code": "^2.9.0",
@@ -139,6 +142,7 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
     "unist-util-visit": "^5.0.0"
   }

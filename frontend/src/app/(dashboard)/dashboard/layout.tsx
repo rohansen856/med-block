@@ -4,6 +4,7 @@ import { User } from "@prisma/client"
 import { dashboardConfig } from "@/config/dashboard"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { MainNav } from "@/components/shared/main-nav"
 import { DashboardNav } from "@/components/shared/nav"
 import { SiteFooter } from "@/components/shared/site-footer"
@@ -35,26 +36,26 @@ export default async function DashboardLayout({
   if (!role || role == "unset") return redirect("/verification")
 
   return (
-    <div className="flex min-h-screen">
-      <aside>
-        <DashboardSidebar user={user as User} />
-      </aside>
-      <div className="w-full">
-        <header className="sticky top-0 z-40 border-b bg-background py-2">
-          <div className="container flex h-16 items-center justify-between py-4">
+    <SidebarProvider>
+      <DashboardSidebar user={user as User} />
+      <div className="w-full bg-background">
+        <header className="flex h-16 items-center justify-between border-b p-4 pr-12 lg:pr-24">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
             <MainNav items={dashboardConfig.mainNav} />
-            <UserAccountNav
-              user={{
-                name: user.name,
-                image: user.image,
-                email: user.email,
-              }}
-            />
           </div>
+          <UserAccountNav
+            user={{
+              name: user.name,
+              image: user.image,
+              email: user.email,
+            }}
+          />
         </header>
-
-        <main className="px-4">{children}</main>
+        <main className="relative min-h-screen overflow-hidden p-4">
+          {children}
+        </main>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }

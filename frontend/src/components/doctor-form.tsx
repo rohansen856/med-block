@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { useForm } from "react-hook-form"
@@ -20,8 +21,12 @@ import { Input } from "@/components/ui/input"
 
 import { MedicalContract } from "./contract"
 import { NavBar } from "./metamask"
+import { toast } from "./ui/use-toast"
 
 const FormSchema = z.object({
+  name: z.string().min(4, {
+    message: "Name must be atleast 4 characters",
+  }),
   phoneNumber: z.string().min(10, {
     message: "Phone number must be at least 10 digits.",
   }),
@@ -55,9 +60,11 @@ interface DoctorFormProps extends React.HTMLAttributes<typeof Form> {
 
 export function DoctorForm({ ...props }: DoctorFormProps) {
   const [address, setAddress] = useState("")
+  const router = useRouter()
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      name: "",
       phoneNumber: "",
       aadharNumber: "",
       mbbsId: "",
@@ -71,12 +78,18 @@ export function DoctorForm({ ...props }: DoctorFormProps) {
     try {
       const contract = new MedicalContract(data.blockId)
       await contract.init()
-      // contract.registerDoctor("doc-oc", data.specialty, 1000)
+      await contract.registerDoctor(data.name, data.specialty, data.fees)
       const res = await axios.post("/api/users/doctor", {
         ...data,
         userId: props.userId,
       })
-      console.log(res)
+      if (res.status != 200)
+        return toast({
+          title: "Registration failed. Please try again!",
+          variant: "destructive",
+        })
+
+      router.push("/dashboard")
     } catch (error) {
       console.log(error)
     }
@@ -90,8 +103,21 @@ export function DoctorForm({ ...props }: DoctorFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[500px] max-w-full p-4 space-y-6"
+        className="w-[500px] max-w-full space-y-6 p-4"
       >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your username" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="phoneNumber"
@@ -175,11 +201,14 @@ export function DoctorForm({ ...props }: DoctorFormProps) {
                   <NavBar setAddress={setAddress} />
                 </div>
               </FormControl>
+              <FormDescription>*You cannot change this later</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="w-full">
+          Submit
+        </Button>
       </form>
     </Form>
   )

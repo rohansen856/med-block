@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Icons } from "@/components/icons"
 
 export function RoleSelect() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
@@ -81,10 +82,11 @@ export function RoleSelect() {
         </Button>
         <Button
           type="submit"
-          className="w-full py-4 text-lg"
+          className="peer w-full py-4 text-lg"
           disabled={!selectedOption}
         >
           Proceed
+          <Icons.chevronRight className="peer-hover:translate-x-4" />
         </Button>
       </div>
     </form>
