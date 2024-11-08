@@ -159,6 +159,7 @@ model Prescription {
     doctorId               Int
     patientId              Int
     issueDate              DateTime    @default(now())
+    validTill              DateTime
     medications            Medication[]
 
     doctor                 Doctor      @relation(fields: [doctorId], references: [id], onDelete: Cascade)

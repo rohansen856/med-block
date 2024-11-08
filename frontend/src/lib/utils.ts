@@ -20,6 +20,9 @@ export function absoluteUrl(path: string) {
   return `${env.NEXT_PUBLIC_APP_URL}${path}`
 }
 
+export const sleep = (delay: number) =>
+  new Promise((res) => setTimeout(res, delay * 1000))
+
 export type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {}

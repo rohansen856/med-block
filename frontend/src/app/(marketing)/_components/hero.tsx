@@ -1,10 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { motion, useAnimation } from "framer-motion"
 import { ChevronRight, Globe, Network, Shield, Users } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayText, setDisplayText] = useState("")
@@ -104,10 +107,18 @@ export default function HeroSection() {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-700 disabled:pointer-events-none disabled:opacity-50">
+              <Link
+                href={"/dashboard"}
+                className={cn(
+                  buttonVariants({
+                    className:
+                      "inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-700 disabled:pointer-events-none disabled:opacity-50",
+                  })
+                )}
+              >
                 Get Started
                 <ChevronRight className="ml-2 size-4" />
-              </Button>
+              </Link>
               <Button
                 variant="outline"
                 className="inline-flex h-10 items-center justify-center rounded-md border border-gray-700 bg-gray-800 px-8 text-sm font-medium text-gray-200 shadow-lg transition-colors hover:bg-gray-700 hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-700 disabled:pointer-events-none disabled:opacity-50"
@@ -123,7 +134,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="relative aspect-square w-full max-w-[500px]">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-20 blur-2xl"></div>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-60 blur-2xl"></div>
               <motion.div
                 className="relative flex aspect-square items-center justify-center rounded-xl border border-gray-700 bg-gray-800 p-6 shadow-2xl"
                 animate={{ scale: [1, 1.05, 1] }}
@@ -133,7 +144,7 @@ export default function HeroSection() {
                   ease: "easeInOut",
                 }}
               >
-                <Network className="size-3/4 text-blue-400" />
+                <Icons.logo className="size-3/4 text-blue-400" />
               </motion.div>
             </div>
           </motion.div>

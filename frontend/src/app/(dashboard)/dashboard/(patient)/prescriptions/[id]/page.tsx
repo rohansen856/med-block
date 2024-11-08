@@ -26,6 +26,7 @@ const prescriptionData: Prescription & { medications: Medication[] } = {
   doctorId: 1,
   patientId: 2,
   issueDate: new Date(),
+  validTill: new Date(),
   medications: [
     {
       id: "7bef6d5e-f03e-4f52-8d0b-90ca76353f7d",
@@ -221,7 +222,7 @@ export default function Component() {
         </div>
       </div>
       <div className="mt-8 text-center">
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="w-full max-w-4xl bg-blue-600 text-primary hover:bg-blue-700">
           <Printer className="mr-2 size-4" /> Print Prescription
         </Button>
       </div>

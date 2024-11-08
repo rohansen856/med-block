@@ -7,13 +7,17 @@ import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { PatientForm } from "@/components/patient-form"
 
+import PatientFeaturesSection from "./benifit"
+
 export default async function DoctorRegister() {
   const user = await getCurrentUser()
   if (!user || !user.id) redirect("/login")
 
   return (
     <section className="flex h-screen justify-center">
-      <div className="hidden flex-1 bg-secondary lg:block"></div>
+      <div className="hidden flex-1 lg:block">
+        <PatientFeaturesSection />
+      </div>
       <section aria-label="registration-form">
         <div className="flex items-center gap-4 p-4">
           <Link

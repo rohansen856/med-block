@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { Coins, FileText, Lock, Shield, Stethoscope } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -42,7 +44,7 @@ export default function DoctorFeaturesSection() {
   const [converted, setConverted] = useState("0")
 
   return (
-    <section className="w-full bg-gray-900 py-12 md:py-24 lg:py-32">
+    <section className="size-full bg-gray-900 py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -151,10 +153,17 @@ export default function DoctorFeaturesSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-12 text-center"
         >
-          <Button className="bg-blue-600 text-white hover:bg-blue-700">
+          <Link
+            href={"/verification/patient"}
+            className={cn(
+              buttonVariants({
+                className: "bg-blue-600 text-white hover:bg-blue-700",
+              })
+            )}
+          >
             <Shield className="mr-2 size-4" />
-            Join Our Doctor Network
-          </Button>
+            Join As Patient Instead
+          </Link>
         </motion.div>
       </div>
     </section>

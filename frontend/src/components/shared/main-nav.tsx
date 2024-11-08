@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useSelectedLayoutSegment } from "next/navigation"
+import { usePathname, useSelectedLayoutSegment } from "next/navigation"
 import { MainNavItem } from "@/types"
 
 import { siteConfig } from "@/config/site"
@@ -19,11 +19,18 @@ interface MainNavProps {
 export function MainNav({ items, children }: MainNavProps) {
   const segment = useSelectedLayoutSegment()
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
+  const path = usePathname()
 
   return (
     <div className="flex gap-6 md:gap-10">
-      <Link href="/" className="flex items-center space-x-2 md:hidden">
-        <Image src={"/logo.svg"} height={50} width={50} alt="MB" />
+      <Link
+        href="/"
+        className={cn(
+          "flex items-center space-x-2",
+          path != "/" && "md:hidden"
+        )}
+      >
+        <Image src={"/logo.svg"} height={40} width={40} alt="MB" />
         <span className="hidden font-bold underline underline-offset-4 sm:inline-block">
           MedBlock
         </span>

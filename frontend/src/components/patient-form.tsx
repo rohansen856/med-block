@@ -136,11 +136,11 @@ export function PatientForm({ ...props }: PatientFormProps) {
           name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Gender</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Select your gender" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

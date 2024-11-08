@@ -79,46 +79,46 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Dashboard",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Profile",
+          url: "/dashboard",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Your Appointments",
+          url: "/dashboard/appointments",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Book appointments",
+          url: "/dashboard/appointments/book",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Personal Details",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Prescriptions",
+          url: "/dashboard/prescriptions",
+        },
+        {
+          title: "Medical History",
           url: "#",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
+          title: "AI helper",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Legal & Jurisdiction",
       url: "#",
       icon: BookOpen,
       items: [
@@ -208,7 +208,7 @@ export function DashboardSidebar({ ...props }: DashboardSidebar) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
                   <Icons.logo />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
